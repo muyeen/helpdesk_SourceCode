@@ -1,266 +1,110 @@
 <template>
   <div id="app">
-    <Result />
-    <div>
-      {{this.user}}
-    </div>
+    <Search v-on:search-run="search"/>
+    <Result v-bind:searchResult="searchResult" v-if="keyWord.length"/>
+ 
   </div>
 </template>
 
 <script>
-import Result from './components/Result'
-// import axios from 'axios';
+import Result from './components/Result';
+import Search from './components/Search';
+import axios from 'axios';
+
 export default {
   name: 'app',
   components: {
-    Result
+    Result,
+    Search
   }, 
   data() {
     return {
-      keyWord: 'Francisca',
-      user: 
-      [
-  {
-    "_id": 1,
-    "url": "http://initech.tokoin.io.com/api/v2/users/1.json",
-    "external_id": "74341f74-9c79-49d5-9611-87ef9b6eb75f",
-    "name": "Francisca Rasmussen",
-    "alias": "Miss Coffey",
-    "created_at": "2016-04-15T05:19:46 -10:00",
-    "active": true,
-    "verified": true,
-    "shared": false,
-    "locale": "en-AU",
-    "timezone": "Sri Lanka",
-    "last_login_at": "2013-08-04T01:03:27 -10:00",
-    "email": "coffeyrasmussen@flotonic.com",
-    "phone": "8335-422-718",
-    "signature": "Don't Worry Be Happy!",
-    "organization_id": 119,
-    "tags": [
-      "Springville",
-      "Sutton",
-      "Hartsville/Hartley",
-      "Diaperville"
-    ],
-    "suspended": true,
-    "role": "admin"
-  },
-  {
-    "_id": 2,
-    "url": "http://initech.tokoin.io.com/api/v2/users/2.json",
-    "external_id": "c9995ea4-ff72-46e0-ab77-dfe0ae1ef6c2",
-    "name": "Cross Barlow",
-    "alias": "Miss Joni",
-    "created_at": "2016-06-23T10:31:39 -10:00",
-    "active": true,
-    "verified": true,
-    "shared": false,
-    "locale": "zh-CN",
-    "timezone": "Armenia",
-    "last_login_at": "2012-04-12T04:03:28 -10:00",
-    "email": "jonibarlow@flotonic.com",
-    "phone": "9575-552-585",
-    "signature": "Don't Worry Be Happy!",
-    "organization_id": 106,
-    "tags": [
-      "Foxworth",
-      "Woodlands",
-      "Herlong",
-      "Henrietta"
-    ],
-    "suspended": false,
-    "role": "admin"
-  },
-  {
-    "_id": 3,
-    "url": "http://initech.tokoin.io.com/api/v2/users/3.json",
-    "external_id": "85c599c1-ebab-474d-a4e6-32f1c06e8730",
-    "name": "Ingrid Wagner",
-    "alias": "Miss Buck",
-    "created_at": "2016-07-28T05:29:25 -10:00",
-    "active": false,
-    "verified": false,
-    "shared": false,
-    "locale": "en-AU",
-    "timezone": "Trinidad and Tobago",
-    "last_login_at": "2013-02-07T05:53:38 -11:00",
-    "email": "buckwagner@flotonic.com",
-    "phone": "9365-482-943",
-    "signature": "Don't Worry Be Happy!",
-    "organization_id": 104,
-    "tags": [
-      "Mulino",
-      "Kenwood",
-      "Wescosville",
-      "Loyalhanna"
-    ],
-    "suspended": false,
-    "role": "end-user"
-  },
-  {
-    "_id": 4,
-    "url": "http://initech.tokoin.io.com/api/v2/users/4.json",
-    "external_id": "37c9aef5-cf01-4b07-af24-c6c49ac1d1c7",
-    "name": "Rose Newton",
-    "alias": "Mr Cardenas",
-    "created_at": "2016-02-09T07:52:10 -11:00",
-    "active": true,
-    "verified": true,
-    "shared": true,
-    "locale": "de-CH",
-    "timezone": "Netherlands",
-    "last_login_at": "2012-09-25T01:32:46 -10:00",
-    "email": "cardenasnewton@flotonic.com",
-    "phone": "8685-482-450",
-    "signature": "Don't Worry Be Happy!",
-    "organization_id": 122,
-    "tags": [
-      "Gallina",
-      "Glenshaw",
-      "Rowe",
-      "Babb"
-    ],
-    "suspended": true,
-    "role": "end-user"
-  },
-  {
-    "_id": 5,
-    "url": "http://initech.tokoin.io.com/api/v2/users/5.json",
-    "external_id": "29c18801-fb42-433d-8674-f37d63e637df",
-    "name": "Loraine Pittman",
-    "alias": "Mr Ola",
-    "created_at": "2016-06-12T08:49:19 -10:00",
-    "active": true,
-    "verified": false,
-    "shared": false,
-    "locale": "zh-CN",
-    "timezone": "Monaco",
-    "last_login_at": "2013-07-03T06:59:27 -10:00",
-    "email": "olapittman@flotonic.com",
-    "phone": "9805-292-618",
-    "signature": "Don't Worry Be Happy!",
-    "organization_id": 101,
-    "tags": [
-      "Frizzleburg",
-      "Forestburg",
-      "Sandston",
-      "Delco"
-    ],
-    "suspended": false,
-    "role": "admin"
-  },
-  {
-    "_id": 6,
-    "url": "http://initech.tokoin.io.com/api/v2/users/6.json",
-    "external_id": "ed106e63-396d-4d16-ae49-d3dd37049ba3",
-    "name": "Riggs Hebert",
-    "alias": "Miss Shelton",
-    "created_at": "2016-04-04T01:30:49 -10:00",
-    "active": false,
-    "verified": false,
-    "shared": false,
-    "locale": "zh-CN",
-    "timezone": "Liberia",
-    "last_login_at": "2012-08-24T10:20:58 -10:00",
-    "email": "sheltonhebert@flotonic.com",
-    "phone": "8935-413-112",
-    "signature": "Don't Worry Be Happy!",
-    "organization_id": 109,
-    "tags": [
-      "Belfair",
-      "Chamberino",
-      "Roberts",
-      "Cascades"
-    ],
-    "suspended": false,
-    "role": "end-user"
-  },
-  {
-    "_id": 7,
-    "url": "http://initech.tokoin.io.com/api/v2/users/7.json",
-    "external_id": "bce94e82-b4f4-438f-bc0b-2440e8265705",
-    "name": "Lou Schmidt",
-    "alias": "Miss Shannon",
-    "created_at": "2016-05-07T08:43:52 -10:00",
-    "active": false,
-    "verified": false,
-    "shared": false,
-    "locale": "en-AU",
-    "timezone": "Central African Republic",
-    "last_login_at": "2016-02-25T12:26:31 -11:00",
-    "email": "shannonschmidt@flotonic.com",
-    "phone": "9094-083-167",
-    "signature": "Don't Worry Be Happy!",
-    "organization_id": 104,
-    "tags": [
-      "Cawood",
-      "Disautel",
-      "Boling",
-      "Southview"
-    ],
-    "suspended": true,
-    "role": "admin"
-  },
-  {
-    "_id": 8,
-    "url": "http://initech.tokoin.io.com/api/v2/users/8.json",
-    "external_id": "fa13ffa4-0ba1-41d1-be4a-c1e7a92f25e4",
-    "name": "Lolita Herring",
-    "alias": "Miss Reyna",
-    "created_at": "2016-07-14T03:21:49 -10:00",
-    "active": false,
-    "verified": false,
-    "shared": false,
-    "locale": "de-CH",
-    "timezone": "Iceland",
-    "last_login_at": "2014-10-28T03:06:58 -11:00",
-    "email": "reynaherring@flotonic.com",
-    "phone": "8484-692-871",
-    "signature": "Don't Worry Be Happy!",
-    "organization_id": 125,
-    "tags": [
-      "Greenbush",
-      "Canby",
-      "Bedias",
-      "Boyd"
-    ],
-    "suspended": true,
-    "role": "agent"
-  },
-  {
-    "_id": 9,
-    "url": "http://initech.tokoin.io.com/api/v2/users/9.json",
-    "external_id": "215e9cb6-cd30-444d-95f3-4c172d68859d",
-    "name": "Josefa Mcfadden",
-    "alias": "Mr Casey",
-    "created_at": "2016-03-26T04:11:05 -11:00",
-    "active": true,
-    "verified": false,
-    "shared": false,
-    "locale": "zh-CN",
-    "timezone": "France, Metropolitan",
-    "last_login_at": "2013-04-25T09:04:57 -10:00",
-    "email": "caseymcfadden@flotonic.com",
-    "phone": "8715-273-472",
-    "signature": "Don't Worry Be Happy!",
-    "organization_id": 123,
-    "tags": [
-      "Fresno",
-      "Shawmut",
-      "Buxton",
-      "Winchester"
-    ],
-    "suspended": true,
-    "role": "agent"
-  }]
+      keyWord: '',
+      data : {
+        users: [],
+        organizations: [],
+        tickets: []
+      },
+      searchResult : {
+        users: [],
+        organizations: [],
+        tickets: []
+      }
+
     }
   },
-  methods: {
-    created() {
-      //axios.get('http://localhost:8080/src/JsonStore/users.json')
-      //  .then(res => this.user = res)
-        ///.catch(err => console.log(err))
+  created() {
+    
+      axios.get('https://muyeen.github.io/GoBot/users.json')
+      .then(res => this.data.users = res.data)
+      .catch(err => console.log(err));
+
+      axios.get('https://muyeen.github.io/GoBot/organizations.json')
+      .then(res => this.data.organizations = res.data)
+      .catch(err => console.log(err));
+
+      axios.get('https://muyeen.github.io/GoBot/tickets.json')
+      .then(res => this.data.tickets = res.data)
+      .catch(err => console.log(err));
+
+     // this.searchAll();
+
+    },
+   methods: {
+    search(keyWord){
+      this.keyWord = keyWord;
+      this.getUserDetails();
+      this.getOrganizationDetails();
+      this.getTicketDetails();
+
+    },
+
+    getOrganizationDetails(){
+        this.searchResult.organizations = this.data.organizations
+        .filter(organization => organization._id.toString() == this.keyWord)
+        .map((organization) => {
+        
+          const  orgTickets = this.data.tickets.filter(ticket => ticket.organization_id == organization._id).map((ticket) => {
+            return {
+            id:ticket._id,
+            subject: ticket.subject,
+            user: this.data.users.filter(user => user._id === ticket.submitter_id)[0]
+            }
+          })
+          
+          return {
+            orgData: organization,
+            orgTickets: orgTickets
+            };
+          
+        })
+    },
+    getUserDetails(){
+      this.searchResult.users = this.data.users
+      .filter(user => user._id.toString() === this.keyWord)
+      .map((user) => {
+        return {
+          userData : user,
+          orgData: this.data.organizations.filter(organization => organization._id === user.organization_id)[0],
+          ticketsData:{
+            assigneeTickets : this.data.tickets.filter(ticket => ticket.assignee_id === user._id),
+            submittedTickets : this.data.tickets.filter(ticket => ticket.submitter_id === user._id)
+          }
+        }
+      })
+    },
+
+    getTicketDetails(){
+       this.searchResult.tickets = this.data.tickets
+       .filter(ticket => ticket._id == this.keyWord)
+       .map((ticket) => {
+         return {
+           ticketData: ticket,
+           ticketAssignee : this.data.users.filter(user => user._id === ticket.assignee_id)[0],
+           ticketSubmitter : this.data.users.filter(user => user._id === ticket.submitter_id)[0],
+           ticketOrganization : this.data.organizations.filter(organization => organization._id === ticket.organization_id)[0]
+         }
+       });
     }
   }
     
@@ -272,8 +116,10 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  text-align: left;
   color: #2c3e50;
   margin-top: 60px;
 }
 </style>
+
+
